@@ -1,5 +1,9 @@
 # 2023 年寒假 iOS 課程規劃
 
+[課程 Sample Code (GitHub)](https://github.com/leoho0722/2023-iOS-Lession)
+
+作業繳交方式：上傳到你的 GitHub／GitLab，然後把 Git Repo 網址給我
+
 ## Palette
 
 ### 會用到的技能
@@ -50,12 +54,31 @@
 * RealmSwift
 * class
 * Singleton
-* CocoaPods
-* Swift Package Manager
+* CocoaPods／Swift Package Manager
 * MVC Architecture
 
 ### 作業
 
 * 實作「更新」操作，並實際將 Database 內的資料進行更新
-* 實作「排序」操作，並讓 UI 依照排序方式進行更新
+* 實作「排序」操作，並讓 UI 依照所選的排序方式進行更新
 * 將 Database 的操作寫成一個 Singleton，並將相關操作改由這個 Singleton Object 處理
+
+## Alarm Clock
+
+### 會用到的技能
+
+* UILabel
+* UITextField
+* UITableView
+* UITableView Cell
+* UINavigationController
+* UIBarButtonItems
+* UIAlertController
+* UNNotification
+* Auto Layout
+* MVC Architecture
+* Pass Value
+* struct
+* class
+* Singleton
+* CocoaPods／Swift Package Manager
