@@ -24,6 +24,7 @@
 
 * 讓整個畫面的背景，也可以跟著變換顏色
 * 幫 View 新增黑色邊框，並將邊框寬設為 2
+* 當輸入超過 255 時，也要讓 View 的背景色變回預設值 (UIColor.lightGray)，整個畫面的背景色也要變回預設值 (UIColor.white)
 * 讓 RGB 各顏色的 Slider 能隨著現在的數值來變換顏色
 
 ## Message Board Part 1
