@@ -33,10 +33,12 @@
 
 * UILabel
 * UITextField
+* UITextView
 * UIButton
 * UITableView
 * UITableView Cell
 * UIAlertController
+* UITapGestureRecognizer
 * Auto Layout
 * Closure
 * struct
