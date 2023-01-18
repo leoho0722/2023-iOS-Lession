@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MessageBoardViewController: UIViewController {
     
@@ -17,12 +18,21 @@ class MessageBoardViewController: UIViewController {
     @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var messageTableView: UITableView!
     
+    /// 用來顯示留言資料的陣列
     var messageArray: [Message] = []
     
+    /// 用來顯示排序選項的陣列
     var optionsArray: [String] = ["預設", "舊到新", "新到舊"]
     
+    /// 現在是否為更新模式
+    var isEdit: Bool = false
+    
+    /// 目前要更新的那筆資料所在 indexPath.row
+    var currentIndex: Int = 0
+    
+    /// enum 排序規則
     enum SortRule {
-        /// 預設的排序規則
+        /// 預設的排序規則 = 舊到新
         case `default`
         
         /// 舊到新的排序規則
@@ -35,6 +45,11 @@ class MessageBoardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchFromDatabase()
     }
     
     /// 設定 UI 樣式
@@ -56,7 +71,14 @@ class MessageBoardViewController: UIViewController {
     /// 設定 UIButton 樣式
     private func setupButton() {
         sendButton.setTitle("送出", for: .normal)
+        sendButton.layer.cornerRadius = sendButton.bounds.height / 6
+        sendButton.backgroundColor = .systemBlue
+        sendButton.setTitleColor(.white, for: .normal)
+        
         sortButton.setTitle("排序", for: .normal)
+        sortButton.layer.cornerRadius = sortButton.bounds.height / 6
+        sortButton.backgroundColor = .systemPink
+        sortButton.setTitleColor(.white, for: .normal)
     }
     
     /// 設定 UITableView 樣式
@@ -70,6 +92,22 @@ class MessageBoardViewController: UIViewController {
     /// 關鍵盤
     @objc func closeKeyboard() {
         view.endEditing(true)
+    }
+    
+    /// 從 Realm Database 撈資料
+    func fetchFromDatabase() {
+        LocalDatabase.shared.fetch { messages in
+            self.messageArray = []
+            for i in messages {
+                self.messageArray.append(Message(name: i.name,
+                                                 content: i.content,
+                                                 createTimestamp: i.createTimestamp,
+                                                 updateTimestamp: i.updateTimestamp))
+            }
+            DispatchQueue.main.async {
+                self.messageTableView.reloadData()
+            }
+        }
     }
     
     /// 顯示 Alert
@@ -118,18 +156,28 @@ class MessageBoardViewController: UIViewController {
     
     /// 留言排序
     /// - Parameter rule: enum SortRule，排序規則
-    /// - Returns: 排序完的 [Message]
-    func sortMessage(rule: SortRule) -> [Message] {
-        return messageArray.sorted(by: { prev, next in
-            switch rule {
-            case .default: // 預設 = 新到舊
-                return prev.timestamp > next.timestamp
-            case .oldToNew:
-                return prev.timestamp < next.timestamp
-            case .newToOld:
-                return prev.timestamp > next.timestamp
+    func sortMessage(rule: SortRule) {
+        let realm = try! Realm()
+        var results: Results<MessageTable>
+        switch rule {
+        case .default, .oldToNew:
+            results = realm.objects(MessageTable.self).sorted(byKeyPath: "updateTimestamp", ascending: true)
+        case .newToOld:
+            results = realm.objects(MessageTable.self).sorted(byKeyPath: "updateTimestamp", ascending: false)
+        }
+        
+        if results.count > 0 {
+            messageArray = []
+            for i in results {
+                messageArray.append(Message(name: i.name,
+                                            content: i.content,
+                                            createTimestamp: i.createTimestamp,
+                                            updateTimestamp: i.updateTimestamp))
             }
-        })
+            DispatchQueue.main.async {
+                self.messageTableView.reloadData()
+            }
+        }
     }
     
     @IBAction func sendBtnClicked(_ sender: UIButton) {
@@ -142,16 +190,33 @@ class MessageBoardViewController: UIViewController {
             showAlert(title: "錯誤", message: "請輸入留言內容", confirmTitle: "關閉")
             return
         }
-        showAlert(title: "成功", message: "留言已送出！", confirmTitle: "關閉") {
-            self.messagePeopleTextField.text = ""
-            self.messageTextView.text = ""
-        }
         print("留言人：\(messagePeople)")
         print("留言內容：\(message)")
-        messageArray.append(Message(name: messagePeople,
-                                    content: message,
-                                    timestamp: Int64(Date().timeIntervalSince1970)))
-        messageTableView.reloadData()
+        
+        if isEdit {
+            messageArray[currentIndex].name = messagePeople
+            messageArray[currentIndex].content = message
+            messageArray[currentIndex].updateTimestamp = Int64(Date().timeIntervalSince1970)
+            LocalDatabase.shared.update(message: messageArray[currentIndex])
+            isEdit = false
+            
+            showAlert(title: "成功", message: "留言更新成功！", confirmTitle: "關閉") {
+                self.messagePeopleTextField.text = ""
+                self.messageTextView.text = ""
+            }
+        } else {
+            let msg = Message(name: messagePeople,
+                              content: message,
+                              createTimestamp: Int64(Date().timeIntervalSince1970),
+                              updateTimestamp: Int64(Date().timeIntervalSince1970))
+            LocalDatabase.shared.add(message: msg)
+            
+            showAlert(title: "成功", message: "留言已送出！", confirmTitle: "關閉") {
+                self.messagePeopleTextField.text = ""
+                self.messageTextView.text = ""
+            }
+        }
+        fetchFromDatabase()
     }
     
     @IBAction func sortBtnClicked(_ sender: UIButton) {
@@ -161,13 +226,13 @@ class MessageBoardViewController: UIViewController {
             switch index {
             case 0:
                 print("選擇「預設」排序方式")
-                print(self.sortMessage(rule: .default))
+                self.sortMessage(rule: .default)
             case 1:
                 print("選擇「舊到新」排序方式")
-                print(self.sortMessage(rule: .oldToNew))
+                self.sortMessage(rule: .oldToNew)
             case 2:
                 print("選擇「新到舊」排序方式")
-                print(self.sortMessage(rule: .newToOld))
+                self.sortMessage(rule: .newToOld)
             default:
                 break
             }
@@ -201,11 +266,31 @@ extension MessageBoardViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "刪除") { action, sourceView, completionHandler in
-            self.messageArray.remove(at: indexPath.row)
-            tableView.reloadData()
+            LocalDatabase.shared.delete(message: self.messageArray[indexPath.row])
+            self.fetchFromDatabase()
             completionHandler(true)
         }
+        deleteAction.backgroundColor = .systemRed
+        deleteAction.image = UIImage(systemName: "trash")
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
+    
+    // UITableView 左滑 Action
+    func tableView(_ tableView: UITableView,
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let editAction = UIContextualAction(style: .destructive, title: "編輯") { action, sourceView, completionHandler in
+            self.isEdit.toggle()
+            self.currentIndex = indexPath.row
+            self.messagePeopleTextField.text = self.messageArray[indexPath.row].name
+            self.messageTextView.text = self.messageArray[indexPath.row].content
+            completionHandler(true)
+        }
+        editAction.backgroundColor = .systemBlue
+        editAction.image = UIImage(systemName: "pencil")
+        let configuration = UISwipeActionsConfiguration(actions: [editAction])
+        configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
 }
