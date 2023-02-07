@@ -6,10 +6,10 @@
 
 ## (1/16) Palette
 
-[1/16 Teams 課程錄影 Part1](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EWtBNr2yDRZAhKSHrsHVWCkBAS26AbKGK5rG2HtIX5xBcw?e=dRGw8t)
-[1/16 Teams 課程錄影 Part2](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EScgOtjVqslLgf4zZxotSqsB3xLkhxt14yPyHjTmfEh3Iw?e=342Sa9)
-[1/16 Teams 課程錄影 Part3](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EfCjwum0s3lBiLnQI2J2N8IBbbxSJ16IdeCEmN8fo_8Dig?e=H60eAd)
-[1/16 Teams 課程錄影 Part4](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EfCjwum0s3lBiLnQI2J2N8IBbbxSJ16IdeCEmN8fo_8Dig?e=H60eAd)
+- [1/16 Teams 課程錄影 Part1](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EWtBNr2yDRZAhKSHrsHVWCkBAS26AbKGK5rG2HtIX5xBcw?e=dRGw8t)
+- [1/16 Teams 課程錄影 Part2](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EScgOtjVqslLgf4zZxotSqsB3xLkhxt14yPyHjTmfEh3Iw?e=342Sa9)
+- [1/16 Teams 課程錄影 Part3](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EfCjwum0s3lBiLnQI2J2N8IBbbxSJ16IdeCEmN8fo_8Dig?e=H60eAd)
+- [1/16 Teams 課程錄影 Part4](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EfCjwum0s3lBiLnQI2J2N8IBbbxSJ16IdeCEmN8fo_8Dig?e=H60eAd)
 
 ### 會用到的技能
 
@@ -34,8 +34,8 @@
 
 ## (1/17) Message Board Part 1
 
-[1/17 Teams 課程錄影 Part1](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EblUabEINYVOu1NQQoUmkgkBlB0Da_2zQOPHA4SHR6zj7w?e=4iO6b1)
-[1/17 Teams 課程錄影 Part2](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/ETryn1uK7T5MvYVRkzCmYSgBEu64ntZg3ixFlrBajtIK0w?e=JFe3fs)
+- [1/17 Teams 課程錄影 Part1](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/EblUabEINYVOu1NQQoUmkgkBlB0Da_2zQOPHA4SHR6zj7w?e=4iO6b1)
+- [1/17 Teams 課程錄影 Part2](https://o365nutc.sharepoint.com/:v:/s/msteams_ed6098/ETryn1uK7T5MvYVRkzCmYSgBEu64ntZg3ixFlrBajtIK0w?e=JFe3fs)
 
 ### 會用到的技能
 
