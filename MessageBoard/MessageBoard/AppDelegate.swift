@@ -14,6 +14,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let options: UNAuthorizationOptions = [.alert, .badge]
+        UNUserNotificationCenter.current().requestAuthorization(options: options) { isAllowed, error in
+            guard error == nil else {
+                print("接收通知，Error：\(error?.localizedDescription)")
+                return
+            }
+            if isAllowed {
+                print("使用者同意接收通知")
+            } else {
+                print("使用者不同意接收通知")
+            }
+        }
+        
         return true
     }
 

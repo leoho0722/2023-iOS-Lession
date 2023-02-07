@@ -54,6 +54,8 @@ class MessageBoardViewController: UIViewController {
     
     /// 設定 UI 樣式
     func setupUI() {
+        setupNavigationBarStyle()
+        setupNavigationBarButtonItems()
         setupLabel()
         setupTableView()
         setupButton()
@@ -87,6 +89,27 @@ class MessageBoardViewController: UIViewController {
                                   forCellReuseIdentifier: MessageTableViewCell.identifier)
         messageTableView.dataSource = self
         messageTableView.delegate = self
+    }
+    
+    /// 設定 UINaviagationBar 外觀樣式
+    private func setupNavigationBarStyle() {
+        let appearance = UINavigationBarAppearance()
+        self.navigationController?.navigationBar.standardAppearance = appearance
+    }
+    
+    /// 設定 NavigationBarButtonItem 樣式
+    private func setupNavigationBarButtonItems() {
+        let sortItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle.fill"),
+                                       style: .done,
+                                       target: self,
+                                       action: #selector(sortBtnClicked))
+        navigationItem.leftBarButtonItem = sortItem
+        
+        let addItem = UIBarButtonItem(image: UIImage(systemName: "plus.circle.fill"),
+                                      style: .done,
+                                      target: self,
+                                      action: #selector(sendBtnClicked))
+        navigationItem.rightBarButtonItem = addItem
     }
     
     /// 關鍵盤
@@ -180,7 +203,7 @@ class MessageBoardViewController: UIViewController {
         }
     }
     
-    @IBAction func sendBtnClicked(_ sender: UIButton) {
+    @IBAction @objc func sendBtnClicked(_ sender: UIButton) {
         closeKeyboard()
         guard let messagePeople = messagePeopleTextField.text, !(messagePeople.isEmpty) else {
             showAlert(title: "錯誤", message: "請輸入留言人", confirmTitle: "關閉")
@@ -219,7 +242,7 @@ class MessageBoardViewController: UIViewController {
         fetchFromDatabase()
     }
     
-    @IBAction func sortBtnClicked(_ sender: UIButton) {
+    @IBAction @objc func sortBtnClicked(_ sender: UIButton) {
         showActionSheet(title: "請選擇排序方式",
                         message: "我也不知道要寫什麼",
                         options: optionsArray) { index in
