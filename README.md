@@ -135,3 +135,10 @@
 
 * closures
 * Results type
+
+## (2/8) Swift 語法講解
+
+### 會用到的技能
+
+* Protocol
+* Delegation
