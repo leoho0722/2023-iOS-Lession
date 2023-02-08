@@ -119,15 +119,22 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let nextVC = DetailViewController()
+        nextVC.delegate = self
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
-    
 }
 
 // MARK: - Protocol
 
+extension MainViewController: DetailViewControllerDelegate {
 
+    func changeBackgroundColor(wantChangeTo color: UIColor) {
+        DispatchQueue.main.async {
+            self.view.backgroundColor = color
+        }
+    }
+}

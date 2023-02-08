@@ -15,7 +15,7 @@ class DetailViewController: UIViewController {
     
     // MARK: - Variables
     
-    
+    weak var delegate: DetailViewControllerDelegate?
     
     // MARK: - LifeCycle
     
@@ -43,7 +43,20 @@ class DetailViewController: UIViewController {
     // MARK: - UI Settings
     
     func setupUI() {
-        
+        setupNavigationBarButtonItems()
+    }
+    
+    private func setupNavigationBarButtonItems() {
+        let backItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                       style: .done,
+                                       target: self,
+                                       action: #selector(backItemClicked))
+        navigationItem.leftBarButtonItem = backItem
+    }
+    
+    @objc func backItemClicked() {
+        delegate?.changeBackgroundColor(wantChangeTo: .systemPink)
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - IBAction
@@ -56,4 +69,7 @@ class DetailViewController: UIViewController {
 
 // MARK: - Protocol
 
-
+protocol DetailViewControllerDelegate: NSObjectProtocol {
+    
+    func changeBackgroundColor(wantChangeTo color: UIColor)
+}
